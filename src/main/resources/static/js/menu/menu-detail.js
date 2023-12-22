@@ -19,7 +19,8 @@ $(function () {
         };
 
         $.ajax ({
-            url: "http://localhost:8081/apis/carts/items",
+            // url: "http://localhost:8081/apis/carts/items",
+            url: "http://localhost:8080/cart",
             type: "POST",
             data: JSON.stringify(requestData),
             dataType: "json",

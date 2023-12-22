@@ -1,5 +1,7 @@
 package com.snowlightpay.springkotlindeliveryfront.external.cart
 
+import com.snowlightpay.springkotlindeliveryfront.controller.cart.CartItemAddRequest
+import com.snowlightpay.springkotlindeliveryfront.controller.cart.CartItemAddResponse
 import com.snowlightpay.springkotlindeliveryfront.exception.NotFoundCartException
 import com.snowlightpay.springkotlindeliveryfront.service.cart.CartResponse
 import com.snowlightpay.springkotlindeliveryfront.service.cart.CartRequest
@@ -24,6 +26,24 @@ class CartAdapter(
         val response = restTemplate.exchange<CartResponse>(
             "http://localhost:8081/apis/carts/items?customerId=${cartRequest.customerId}",
             HttpMethod.GET,
+            httpEntity,
+        )
+
+        return response.body?: throw NotFoundCartException()
+    }
+
+    override fun addCartItem(customerId: Long, accessToken: String, request: CartItemAddRequest): CartItemAddResponse {
+        val httpHeaders = ExternalHttpUtil.getApiHeader(accessToken)
+        val httpBody = linkedMapOf(
+            "storeId" to request.storeId.toString(),
+            "menuId" to request.menuId,
+            "quantity" to request.quantity,
+            "customerId" to customerId.toString(),
+        )
+        val httpEntity = HttpEntity(httpBody, httpHeaders)
+        val response = restTemplate.exchange<CartItemAddResponse>(
+            "http://localhost:8081/apis/carts/items",
+            HttpMethod.POST,
             httpEntity,
         )
 
