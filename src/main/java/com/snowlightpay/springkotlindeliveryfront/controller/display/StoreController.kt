@@ -13,6 +13,7 @@ class StoreController(
     @GetMapping("/display/store/{storeId}")
     fun detail(@PathVariable storeId: Long, model: Model): String {
         val store = storeService.detail(storeId = storeId)
+
         model.addAttribute("store", store)
         store?.let { model.addAttribute("menus", it.menus) }
         return "/display/store/store-detail"
