@@ -28,7 +28,7 @@ class CartAdapter(
             HttpMethod.GET,
             httpEntity,
         )
-
+1
         return response.body?: throw NotFoundCartException()
     }
 
