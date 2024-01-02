@@ -1,5 +1,6 @@
 package com.snowlightpay.springkotlindeliveryfront.external.order
 
+import com.snowlightpay.springkotlindeliveryfront.controller.order.dto.OrderHistoryDetailResponse
 import com.snowlightpay.springkotlindeliveryfront.controller.order.dto.OrderHistoryRequest
 import com.snowlightpay.springkotlindeliveryfront.service.order.OrderHistoryService
 import com.snowlightpay.springkotlindeliveryfront.util.ExternalHttpUtil
@@ -16,11 +17,15 @@ class OrderHistoryAdapter(
     private val restTemplate: RestTemplate,
 ): OrderHistoryService {
     override fun list(orderHistoryRequest: OrderHistoryRequest, customerId: String, accessToken: String): OrderHistoryResponse {
-//        val httpHeaders = ExternalHttpUtil.getApiHeader(accessToken)
-//        val httpEntity = HttpEntity(LinkedMultiValueMap<String, String>(), httpHeaders)
-
         val url = "http://localhost:8081/apis/order-history?customerId=${customerId}&orderStatus=${orderHistoryRequest.orderStatus}"
         val response = restTemplate.getForObject<OrderHistoryResponse>(url)
+
+        return response
+    }
+
+    override fun detail(orderId: Long, customerId: String, accessToken: String): OrderHistoryDetailResponse {
+        val url = "http://localhost:8081/apis/order-history/$orderId"
+        val response = restTemplate.getForObject<OrderHistoryDetailResponse>(url)
 
         return response
     }

@@ -9,7 +9,7 @@ $(function () {
         let accessToken = Cookies.get("access-token");
         let customerId = Cookies.get("customerId")
         let orderId = $(this).data('order-id');
-        let orderDetailUrl = "http://localhost:8081/apis/order-histories/" + orderId;
+        let orderDetailUrl = "http://localhost:8080/order-histories/" + orderId;
         $.ajax({
             url: orderDetailUrl,
             beforeSend: function (xhr) {
